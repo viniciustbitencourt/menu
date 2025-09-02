@@ -56,6 +56,14 @@
     .modal-card{width:min(560px,92vw);background:#0c152b;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 10px 30px #00000066}
     .modal h3{margin:0 0 12px}
     .field{width:100%;margin-top:6px;background:#0b1220;border:1px solid var(--border);border-radius:10px;color:var(--text);padding:10px}
+
+    /* feedback inline de cópia (sem popup) */
+    .inline-ok{
+      opacity:0; transform: translateY(2px);
+      transition: opacity .18s ease, transform .18s ease;
+      font-size:12px; color: var(--muted);
+    }
+    .inline-ok.show{ opacity:1; transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -80,8 +88,9 @@
         <div style="flex:1;min-width:220px">
           <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Copia e Cola</div>
           <textarea id="pixCopiaCola" readonly class="field" style="min-height:120px"></textarea>
-          <div style="display:flex;gap:10px;margin-top:10px">
+          <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
             <button id="btnCopy" class="btn">Copiar</button>
+            <span id="copyMsg" class="inline-ok" role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">Copiado!</span>
             <a id="btnDownload" class="btn primary" download="pix-qrcode.png">Baixar QR</a>
             <button id="closeQr" class="btn" style="margin-left:auto">Fechar</button>
           </div>
@@ -97,8 +106,7 @@
   <footer>
     <div class="notice">⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade.</div>
   </footer>
-  
-  <small id="miniMsg" style="opacity:0;transition:opacity .2s">Copiado!</small>
+
   <script>
     // ================== CONFIG PIX (fixo) ==================
     const PIX_KEY = 'edab0cd5-ecd4-4050-87f7-fbaf98899713'; // chave aleatória UUID
@@ -127,7 +135,7 @@
         <article class="card" data-cat="${p.categoria}">
           <div class="hero-img">
             <img src="${p.imagem}" alt="${p.nome} ${p.volume}" loading="lazy"/>
-            ${p.destaque ? `<span class=\"badge promo\">${p.destaque}</span>` : `<span class=\"badge\">${p.categoria}</span>`}
+            ${p.destaque ? `<span class="badge promo">${p.destaque}</span>` : `<span class="badge">${p.categoria}</span>`}
           </div>
           <div class="content">
             <h2 class="title">${p.nome}</h2>
@@ -142,14 +150,14 @@
     function render(list){ grid.innerHTML = list.map(cardHTML).join('') }
 
     // ================== PIX ==================
-    const qrModal = document.getElementById('pixQrModal');
-    const qrImg = document.getElementById('pixQrImg');
-    const copiaCola = document.getElementById('pixCopiaCola');
-    const pixTitle = document.getElementById('pixTitle');
-    const btnCopy = document.getElementById('btnCopy');
-    const btnDownload = document.getElementById('btnDownload');
-    const closeQr = document.getElementById('closeQr');
-    const miniMsg = document.getElementById('miniMsg');
+    const qrModal    = document.getElementById('pixQrModal');
+    const qrImg      = document.getElementById('pixQrImg');
+    const copiaCola  = document.getElementById('pixCopiaCola');
+    const pixTitle   = document.getElementById('pixTitle');
+    const btnCopy    = document.getElementById('btnCopy');
+    const btnDownload= document.getElementById('btnDownload');
+    const closeQr    = document.getElementById('closeQr');
+    const copyMsg    = document.getElementById('copyMsg');
 
     function abrirPix(idEnc, nomeEnc, volumeEnc, preco){
       const nome = decodeURIComponent(nomeEnc);
@@ -159,16 +167,61 @@
       const payload = montarPix(PIX_KEY, RECEIVER_NAME, RECEIVER_CITY, preco, txid, descr);
       mostrarQrPix(`${nome} — ${currency(preco)}`, payload);
     }
+
     function mostrarQrPix(titulo, payload){
       pixTitle.textContent = titulo;
       copiaCola.value = payload;
       const url = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(payload)}`;
       qrImg.src = url;
       btnDownload.href = url;
+
+      // limpa o aviso e reseta botão
+      if (copyMsg){ copyMsg.classList.remove('show'); copyMsg.setAttribute('aria-hidden','true'); copyMsg.textContent = 'Copiado!'; }
+      btnCopy.textContent = 'Copiar';
+
       qrModal.style.display='flex';
     }
+
     closeQr.addEventListener('click', ()=> qrModal.style.display='none');
-    btnCopy.addEventListener('click', ()=>{ navigator.clipboard.writeText(copiaCola.value).then(()=>{miniMsg.style.opacity = 1; setTimeout(() => miniMsg.style.opacity = 0, 1500); });});
+
+    // Confirmação silenciosa de cópia (sem popup)
+    btnCopy.addEventListener('click', async () => {
+      const txt = copiaCola.value;
+      const original = btnCopy.textContent;
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(txt);
+        } else {
+          // Fallback: seleciona e copia
+          copiaCola.select();
+          document.execCommand('copy');
+          window.getSelection().removeAllRanges();
+        }
+
+        btnCopy.textContent = 'Copiado ✓';
+        copyMsg.textContent = 'PIX copiado';
+        copyMsg.classList.add('show');
+        copyMsg.setAttribute('aria-hidden','false');
+        if ('vibrate' in navigator) navigator.vibrate(15);
+
+        setTimeout(() => {
+          btnCopy.textContent = original;
+          copyMsg.classList.remove('show');
+          copyMsg.setAttribute('aria-hidden','true');
+        }, 1500);
+
+      } catch (e) {
+        copyMsg.textContent = 'Não foi possível copiar';
+        copyMsg.classList.add('show');
+        copyMsg.setAttribute('aria-hidden','false');
+        setTimeout(() => {
+          copyMsg.classList.remove('show');
+          copyMsg.setAttribute('aria-hidden','true');
+          copyMsg.textContent = 'Copiado!';
+        }, 2000);
+      }
+    });
 
     // Helpers Pix
     function toAscii(s){
@@ -205,7 +258,17 @@
       const crc = crc16(payloadSemCRC).toUpperCase();
       return payloadSemCRC + crc;
     }
-    function crc16(str){ let crc=0xFFFF; for(let i=0;i<str.length;i++){ crc ^= str.charCodeAt(i)<<8; for(let j=0;j<8;j++){ if(crc & 0x8000){ crc=(crc<<1)^0x1021 } else { crc=(crc<<1) } crc &= 0xFFFF } } return crc.toString(16).padStart(4,'0') }
+    function crc16(str){
+      let crc=0xFFFF;
+      for(let i=0;i<str.length;i++){
+        crc ^= str.charCodeAt(i)<<8;
+        for(let j=0;j<8;j++){
+          if(crc & 0x8000){ crc=(crc<<1)^0x1021 } else { crc=(crc<<1) }
+          crc &= 0xFFFF
+        }
+      }
+      return crc.toString(16).padStart(4,'0')
+    }
 
     // Inicializa
     render(produtos);
