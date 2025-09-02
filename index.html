@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cardápio de Bebidas - Seu Logo Aqui</title>
+  <title>Cardápio de Bebidas</title>
   <meta name="description" content="Cardápio digital de bebidas com pagamento por PIX via QR Code." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
@@ -25,8 +25,34 @@
     }
     header{position:relative}
     .hero-wrap{max-width:1100px;margin:auto;padding:36px 20px 8px}
-    .topbar{display:flex;align-items:center;justify-content:center}
-    .logo{width:54px;height:54px;border-radius:16px;background:conic-gradient(from 180deg,var(--accent),var(--accent2));box-shadow:0 10px 30px #22d3ee30;margin-right:12px}
+
+    /* Agrupa logo + título como link */
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      text-decoration:none; color:inherit;
+    }
+
+    /* Bloco do logo já existe; mantém o gradiente como fallback visual */
+    .logo{
+      width:54px; height:54px; border-radius:16px;
+      background:conic-gradient(from 180deg,var(--accent),var(--accent2));
+      box-shadow:0 10px 30px #22d3ee30;
+      display:inline-block; overflow:hidden;
+      border:1px solid var(--border);
+    }
+
+    /* A imagem do logo preenche o bloco e respeita proporção */
+    .logo img{
+      width:100%; height:100%; display:block;
+      object-fit:contain; border-radius:inherit;
+      background:#0b1220;   /* base atrás do PNG transparente */
+    }
+
+    /* Opcional: reduza o título em telas menores */
+    @media (max-width:480px){
+      h1{ font-size:22px; }
+    }
+
     h1{margin:0;font-size:28px;letter-spacing:.3px}
     .wave{position:relative;margin-top:18px}
     .wave svg{display:block;width:100%;height:auto}
@@ -110,8 +136,12 @@
   <header>
     <div class="hero-wrap">
       <div class="topbar">
-        <div class="logo" aria-hidden="true"></div>
-        <h1>Cardápio de Bebidas</h1>
+        <a class="brand" href="./" aria-label="Início">
+          <span class="logo">
+            <img src="img/logo-praia.svg" alt="Mar Doce Lar" onerror="this.style.display='none'">
+          </span>
+          <h1>Cardápio de Bebidas</h1>
+        </a>
       </div>
     </div>
     <div class="wave" aria-hidden="true">
@@ -190,7 +220,7 @@
       // Botão PIX: desabilita se sem estoque
       const btnPix = semEstoque
         ? `<button class="btn primary disabled" aria-disabled="true" title="Sem estoque">PIX (indisponível)</button>`
-        : `<a class="btn primary" href="#" onclick="abrirPix('${encodeURIComponent(p.id)}','${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}', ${p.preco})">PIX (QR)</a>`;
+        : `<a class="btn primary" href="#" onclick="abrirPix('${encodeURIComponent(p.id)}','${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}', ${p.preco})">PAGUE COM PIX</a>`;
 
       return `
         <article class="card" data-cat="${p.categoria}">
