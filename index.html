@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="praia-dia"><!-- troque para praia-por-do-sol ou remova para usar o tema original (dark) -->
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,101 +9,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      /* Tema original (dark) + defaults das variáveis de fundo */
       --bg:#0b1220; --bg2:#0e162a;
       --card:#10192f; --card2:#0d1529;
       --border:#1e2a44; --text:#e6edf3; --muted:#9fb0c6;
       --accent:#22d3ee; --accent2:#7c3aed;
-
-      /* defaults para a onda do header e o background quando sem tema praia aplicado */
-      --sky1:#0b1220; --sky2:#0e162a;
-      --sea1:#0d1529; --sea2:#0c152b;
-      --sand:#0b1220; --sun-glow: transparent;
     }
-
-    /* Tema PRAIA – DIA */
-    html[data-theme="praia-dia"]{
-      --text:#0b1220;
-      --muted:#284057;
-      --card:#ffffff10; --card2:#ffffff08;
-      --border:#ffffff22;
-
-      --sky1:#BEE3F8;
-      --sky2:#86C5F4;
-      --sea1:#39D0C2;
-      --sea2:#159E9C;
-      --sand:#FFE8B6;
-      --sun-glow:#FFD27A66;
-    }
-
-    /* Tema PRAIA – PÔR-DO-SOL */
-    html[data-theme="praia-por-do-sol"]{
-      --text:#0b1220;
-      --muted:#402a32;
-      --card:#ffffff10; --card2:#ffffff08;
-      --border:#ffffff22;
-
-      --sky1:#FFD1A1;
-      --sky2:#FF9A8B;
-      --sea1:#6BC2F4;
-      --sea2:#2C74B3;
-      --sand:#FFE1A8;
-      --sun-glow:#FFC46A66;
-    }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0;
-      font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,'Noto Sans',sans-serif;
-      color:var(--text);
-
-      /* Fundo com vibe de praia: céu → mar → areia (com halo do sol) */
+      margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,'Noto Sans',sans-serif;color:var(--text);
       background:
-        radial-gradient(420px 260px at 85% 8%, var(--sun-glow) 0%, transparent 60%),
-        radial-gradient(600px 360px at 15% -10%, color-mix(in oklab, var(--sky2) 40%, transparent) 0%, transparent 55%),
-        linear-gradient(180deg, var(--sky1) 0%,
-                                var(--sky2) 42%,
-                                color-mix(in oklab, var(--sea1) 85%, var(--sky2) 15%) 53%,
-                                var(--sea2) 66%,
-                                var(--sand) 100%);
+        radial-gradient(1200px 600px at 15% -10%, #597fc7 0%, transparent 40%),
+        radial-gradient(1000px 600px at 85% -20%, #156eea 0%, transparent 45%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 70%);
     }
-    @media (min-width:560px){
-      body{
-        background-image:
-          radial-gradient(420px 260px at 85% 8%, var(--sun-glow) 0%, transparent 60%),
-          radial-gradient(600px 360px at 15% -10%, color-mix(in oklab, var(--sky2) 40%, transparent) 0%, transparent 55%),
-          repeating-linear-gradient(180deg, transparent 0 8px, #ffffff0a 8px 9px),
-          linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 42%, color-mix(in oklab, var(--sea1) 85%, var(--sky2) 15%) 53%, var(--sea2) 66%, var(--sand) 100%);
-      }
-    }
-
     header{position:relative}
     .hero-wrap{max-width:1100px;margin:auto;padding:36px 20px 8px}
-    .topbar{display:flex;align-items:center;justify-content:center;position:relative}
 
-    /* Botão de alternância do tema praiano */
-    .theme-btn{
-      position:absolute; right:14px; top:14px; z-index:60;
-      padding:8px 12px; border-radius:12px; border:1px solid var(--border);
-      background:#0c152b; color:var(--text); font-weight:700; cursor:pointer;
+    /* Agrupa logo + título como link */
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      text-decoration:none; color:inherit;
     }
-    .theme-btn:hover{ transform: translateY(-1px); }
 
-    /* Marca (logo + título) */
-    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit;}
+    /* Bloco do logo já existe; mantém o gradiente como fallback visual */
     .logo{
-      width:54px;height:54px;border-radius:16px;
+      width:54px; height:54px; border-radius:16px;
       background:conic-gradient(from 180deg,var(--accent),var(--accent2));
       box-shadow:0 10px 30px #22d3ee30;
-      display:inline-block; overflow:hidden; border:1px solid var(--border);
+      display:inline-block; overflow:hidden;
+      border:1px solid var(--border);
     }
-    .logo img{ width:100%; height:100%; display:block; object-fit:contain; background:#0b1220; border-radius:inherit; }
-    h1{margin:0;font-size:28px;letter-spacing:.3px}
 
+    /* A imagem do logo preenche o bloco e respeita proporção */
+    .logo img{
+      width:100%; height:100%; display:block;
+      object-fit:contain; border-radius:inherit;
+      background:#0b1220;   /* base atrás do PNG transparente */
+    }
+
+    /* Opcional: reduza o título em telas menores */
+    @media (max-width:480px){
+      h1{ font-size:22px; }
+    }
+
+    h1{margin:0;font-size:28px;letter-spacing:.3px}
     .wave{position:relative;margin-top:18px}
     .wave svg{display:block;width:100%;height:auto}
-    .wave path{ fill: var(--sky2); } /* usa a cor do 'céu 2' do tema */
 
     main{max-width:1100px;margin:18px auto 0;padding:0 20px}
     .grid{display:grid;gap:16px;grid-template-columns:1fr}
@@ -115,19 +67,27 @@
       border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 12px 26px #00000040
     }
 
-    /* Imagem do card: responsiva e maior */
-    .hero-img{ position:relative;background:#0f1830; aspect-ratio: 4 / 3; }
-    .hero-img img{ width:100%; height:100%; object-fit:cover; opacity:.92; display:block; }
+    /* >>> IMAGEM DO CARD responsiva e maior */
+    .hero-img{
+      position:relative;background:#0f1830;
+      aspect-ratio: 4 / 3;
+    }
+    .hero-img img{
+      width:100%;height:100%;object-fit:cover;opacity:.92;display:block
+    }
 
     .badge{position:absolute;top:10px;left:10px;padding:6px 10px;border-radius:999px;background:#0c152b;border:1px solid var(--border);font-size:11px;color:var(--muted)}
     .badge.promo{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b0f1b;border:0;font-weight:700}
-    .badge.out{ background:#3b0d0d;border-color:#7f1d1d;color:#fecaca;font-weight:800;text-transform:uppercase;letter-spacing:.3px; }
+    /* >>> NOVA BADGE: Sem estoque */
+    .badge.out{
+      background:#3b0d0d;border-color:#7f1d1d;color:#fecaca;font-weight:800;
+      text-transform:uppercase;letter-spacing:.3px;
+    }
 
     .content{padding:14px 14px 16px}
     .title{margin:4px 0 6px;font-size:16px}
-    .meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px;flex-wrap:wrap}
+    .meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}
     .price{margin:12px 0 10px;font-size:18px;font-weight:800;letter-spacing:.2px}
-
     .btns{display:flex;gap:10px}
     .btn{
       flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -137,6 +97,7 @@
     }
     .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#0b0f1b}
     .btn:hover{transform:translateY(-1px)}
+    /* >>> botão desabilitado quando sem estoque */
     .btn.disabled{opacity:.45;cursor:not-allowed;pointer-events:none;filter:saturate(.6)}
 
     footer{max-width:1100px;margin:40px auto 80px;padding:0 20px;color:var(--muted);font-size:12px}
@@ -147,7 +108,7 @@
     .modal h3{margin:0 0 12px}
     .field{width:100%;margin-top:6px;background:#0b1220;border:1px solid var(--border);border-radius:10px;color:var(--text);padding:10px}
 
-    /* QR CODE responsivo */
+    /* >>> QR CODE responsivo */
     .qr-img{
       width:min(360px, 100%);
       aspect-ratio: 1 / 1;
@@ -156,19 +117,19 @@
     }
 
     /* feedback inline de cópia (sem popup) */
-    .inline-ok{ opacity:0; transform: translateY(2px); transition: opacity .18s ease, transform .18s ease; font-size:12px; color: var(--muted); }
+    .inline-ok{
+      opacity:0; transform: translateY(2px);
+      transition: opacity .18s ease, transform .18s ease;
+      font-size:12px; color: var(--muted);
+    }
     .inline-ok.show{ opacity:1; transform: translateY(0); }
 
     /* layout específico da área de botões do PIX */
     .btns-pix{ display:flex; gap:10px; align-items:flex-start; }
     .btns-pix .btn{ flex:0 0 auto; }
     .copy-wrap{ display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
-    .btn-copy{ padding:12px 18px; font-size:15px; font-weight:800; }  /* maior que Fechar */
-    .btn-close{ padding:10px 12px; font-size:14px; }                  /* menor */
-
-    @media (max-width:480px){
-      h1{ font-size:22px; }
-    }
+    .btn-copy{ padding:12px 18px; font-size:15px; font-weight:800; }
+    .btn-close{ padding:10px 12px; font-size:14px; }
   </style>
 </head>
 <body>
@@ -176,21 +137,20 @@
     <div class="hero-wrap">
       <div class="topbar">
         <a class="brand" href="./" aria-label="Início">
-          <span class="logo"><img src="img/logo-praia.svg" alt="Mar Doce Lar" onerror="this.style.display='none'"></span>
+          <span class="logo">
+            <img src="img/logo-praia.svg" alt="Mar Doce Lar" onerror="this.style.display='none'">
+          </span>
           <h1>Cardápio de Bebidas</h1>
         </a>
-        <button id="themeToggle" class="theme-btn" type="button">🌴 Alternar tema</button>
       </div>
     </div>
     <div class="wave" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path d="M0,80 C240,140 480,20 720,60 C960,100 1200,120 1440,60 L1440,120 L0,120 Z"></path>
-      </svg>
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,80 C240,140 480,20 720,60 C960,100 1200,120 1440,60 L1440,120 L0,120 Z" fill="#0e162a"></path></svg>
     </div>
   </header>
 
   <!-- Modal QR PIX -->
-  <div id="pixQrModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="pixTitle">
+  <div id="pixQrModal" class="modal">
     <div class="modal-card">
       <h3 id="pixTitle">Pagar com PIX</h3>
       <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
@@ -202,10 +162,10 @@
           <!-- botões: copiar (maior) + mensagem abaixo + fechar -->
           <div class="btns-pix" style="margin-top:10px">
             <div class="copy-wrap">
-              <button id="btnCopy" class="btn btn-copy" type="button">Copiar</button>
+              <button id="btnCopy" class="btn btn-copy">Copiar</button>
               <span id="copyMsg" class="inline-ok" role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">Copiado!</span>
             </div>
-            <button id="closeQr" class="btn btn-close" type="button" style="margin-left:auto">Fechar</button>
+            <button id="closeQr" class="btn btn-close" style="margin-left:auto">Fechar</button>
           </div>
         </div>
       </div>
@@ -217,7 +177,7 @@
   </main>
 
   <footer>
-    <div class="notice">⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade.</div>
+    <div class="notice">⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade. Imagem ilustrativa.</div>
   </footer>
 
   <script>
@@ -228,16 +188,16 @@
 
     // ================== PRODUTOS (use estoque: 0 p/ esgotado) ==================
     const produtos = [
-      { id:'jameson750', nome:'Whisky Jameson', volume:'750 ml', preco:160.00, categoria:'whisky', imagem:'img/whisky-01.jpg', destaque:'Mais vendido', estoque: 8 },
-      { id:'absolut1l', nome:'Vodka Absolut', volume:'1 L', preco:160.00, categoria:'vodka', imagem:'img/vodka-absolute.jpg', estoque: 5 },
-      { id:'redlabel1l', nome:'Whisky Johnnie Walker Red Label', volume:'1 L', preco:105.00, categoria:'whisky', imagem:'img/whisky-02.jpg', destaque:'Oferta do dia', estoque: 0 },  // esgotado
-      { id:'smirnoff1l', nome:'Vodka Smirnoff', volume:'1 L', preco:69.90, categoria:'vodka', imagem:'img/vodka-smirnoff.jpg', estoque: 12 },
-      { id:'tanqueray750', nome:'Gin Tanqueray', volume:'750 ml', preco:139.90, categoria:'gin', imagem:'img/gin-tanqueray-01.jpg', estoque: 0 }, // esgotado
-      { id:'gordons750', nome:"Gin Gordon's", volume:'750 ml', preco:89.90, categoria:'gin', imagem:'img/gin-bottle-01.jpg', estoque: 7 },
-      { id:'tequilaJose', nome:'Tequila Jose Cuervo Gold', volume:'750 ml', preco:149.90, categoria:'tequila', imagem:'img/tequila-cuervo-01.jpg', estoque: 2 },
-      { id:'rumBacardi', nome:'Rum Bacardí Carta Blanca', volume:'980 ml', preco:79.90, categoria:'rum', imagem:'img/rum-bacardi-01.jpg', estoque: 4 },
-      { id:'tonica', nome:'Água Tônica', volume:'350 ml (lata)', preco:7.00, categoria:'semalcool', imagem:'img/tonica-01.jpg', estoque: 30 },
-      { id:'energetico', nome:'Energético', volume:'473 ml', preco:12.00, categoria:'semalcool', imagem:'img/energetico-redbull-01.jpg', estoque: 0 } // esgotado
+      { id:'jameson750', nome:'Whisky Jameson', volume:'750 ml', preco:160.00, categoria:'Whisky', imagem:'img/whisky-01.jpg', destaque:'Mais vendido', estoque: 1 },
+      { id:'absolut1l', nome:'Vodka Absolut', volume:'1 L', preco:160.00, categoria:'Vodka', imagem:'img/vodka-absolute.jpg', estoque: 1 },
+      { id:'redlabel1l', nome:'Whisky Johnnie Walker Red Label', volume:'1 L', preco:105.00, categoria:'Whisky', imagem:'img/whisky-02.jpg', destaque:'Oferta do dia', estoque: 0 },  // esgotado
+      { id:'smirnoff1l', nome:'Vodka Smirnoff', volume:'1 L', preco:69.90, categoria:'Vodka', imagem:'img/vodka-smirnoff.jpg', estoque: 1 },
+      { id:'tanqueray750', nome:'Gin Tanqueray', volume:'750 ml', preco:139.90, categoria:'Gin', imagem:'img/gin-tanqueray-01.jpg', estoque: 0 }, // esgotado
+      { id:'gordons750', nome:"Gin Gordon's", volume:'750 ml', preco:89.90, categoria:'Gin', imagem:'img/gin-bottle-01.jpg', estoque: 1 },
+      { id:'tequilaJose', nome:'Tequila Jose Cuervo Gold', volume:'750 ml', preco:149.90, categoria:'Tequila', imagem:'img/tequila-cuervo-01.jpg', estoque: 1 },
+      { id:'rumBacardi', nome:'Rum Bacardí Carta Blanca', volume:'980 ml', preco:79.90, categoria:'Rum', imagem:'img/rum-bacardi-01.jpg', estoque: 1 },
+      { id:'tonica', nome:'Água Tônica', volume:'350 ml (lata)', preco:7.00, categoria:'Sem alcool', imagem:'img/tonica-01.jpg', estoque: 1 },
+      { id:'energetico', nome:'Energético', volume:'473 ml', preco:12.00, categoria:'Sem alcool', imagem:'img/energetico-redbull-01.jpg', estoque: 0 } // esgotado
     ];
 
     // ================== RENDER ==================
@@ -247,11 +207,15 @@
     function cardHTML(p){
       const semEstoque = Number(p.estoque) === 0;
 
-      // Badge (prioridade: sem estoque > promo > categoria)
+      // Decide a badge (sem estoque > promo > categoria)
       let badgeHtml = '';
-      if (semEstoque)      badgeHtml = `<span class="badge out">Sem estoque</span>`;
-      else if (p.destaque) badgeHtml = `<span class="badge promo">${p.destaque}</span>`;
-      else                 badgeHtml = `<span class="badge">${p.categoria}</span>`;
+      if (semEstoque) {
+        badgeHtml = `<span class="badge out">Sem estoque</span>`;
+      } else if (p.destaque) {
+        badgeHtml = `<span class="badge promo">${p.destaque}</span>`;
+      } else {
+        badgeHtml = `<span class="badge">${p.categoria}</span>`;
+      }
 
       // Botão PIX: desabilita se sem estoque
       const btnPix = semEstoque
@@ -268,7 +232,6 @@
             <h2 class="title">${p.nome}</h2>
             <div class="meta">
               <span>Volume: ${p.volume}</span><span>•</span><span>Categoria: ${p.categoria}</span>
-              <!-- ${typeof p.estoque === 'number' ? `<span>•</span><span>Estoque: ${p.estoque}</span>` : '' } -->
             </div>
             <div class="price">${currency(p.preco)}</div>
             <div class="btns">
@@ -300,7 +263,7 @@
     function mostrarQrPix(titulo, payload){
       pixTitle.textContent = titulo;
       copiaCola.value = payload;
-      const url = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&data=${encodeURIComponent(payload)}`; // maior e nítido
+      const url = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&data=${encodeURIComponent(payload)}`;
       qrImg.src = url;
 
       if (copyMsg){ copyMsg.classList.remove('show'); copyMsg.setAttribute('aria-hidden','true'); copyMsg.textContent = 'Copiado!'; }
@@ -396,30 +359,7 @@
       return crc.toString(16).padStart(4,'0')
     }
 
-    // Toggle de tema: Dia -> Pôr-do-sol -> Original
-    (function(){
-      const THEMES = ['praia-dia','praia-por-do-sol','']; // '' = remove data-theme
-      let current = 0;
-      const btn = document.getElementById('themeToggle');
-      btn?.addEventListener('click', ()=>{
-        current = (current + 1) % THEMES.length;
-        const t = THEMES[current];
-        if (t) document.documentElement.setAttribute('data-theme', t);
-        else document.documentElement.removeAttribute('data-theme');
-        btn.textContent = t === 'praia-dia' ? '🌞 Praia – Dia'
-                         : t === 'praia-por-do-sol' ? '🌅 Pôr-do-sol'
-                         : '🌙 Tema original';
-      });
-      // estado inicial coerente com o atributo no <html>
-      const initial = document.documentElement.getAttribute('data-theme') || '';
-      current = THEMES.indexOf(initial);
-      if (current < 0) current = 0;
-      btn && (btn.textContent = initial === 'praia-dia' ? '🌞 Praia – Dia'
-                               : initial === 'praia-por-do-sol' ? '🌅 Pôr-do-sol'
-                               : '🌙 Tema original');
-    })();
-
-    // Inicializa grid
+    // Inicializa
     render(produtos);
   </script>
 </body>
