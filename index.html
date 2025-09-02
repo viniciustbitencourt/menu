@@ -97,7 +97,8 @@
   <footer>
     <div class="notice">⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade.</div>
   </footer>
-
+  
+  <small id="miniMsg" style="opacity:0;transition:opacity .2s">Copiado!</small>
   <script>
     // ================== CONFIG PIX (fixo) ==================
     const PIX_KEY = 'edab0cd5-ecd4-4050-87f7-fbaf98899713'; // chave aleatória UUID
@@ -148,6 +149,7 @@
     const btnCopy = document.getElementById('btnCopy');
     const btnDownload = document.getElementById('btnDownload');
     const closeQr = document.getElementById('closeQr');
+    const miniMsg = document.getElementById('miniMsg');
 
     function abrirPix(idEnc, nomeEnc, volumeEnc, preco){
       const nome = decodeURIComponent(nomeEnc);
@@ -166,7 +168,7 @@
       qrModal.style.display='flex';
     }
     closeQr.addEventListener('click', ()=> qrModal.style.display='none');
-    btnCopy.addEventListener('click', ()=>{ navigator.clipboard.writeText(copiaCola.value).then(()=>Notification('Código PIX copiado!')) });
+    btnCopy.addEventListener('click', ()=>{ navigator.clipboard.writeText(copiaCola.value).then(()=>{miniMsg.style.opacity = 1; setTimeout(() => miniMsg.style.opacity = 0, 1500); });});
 
     // Helpers Pix
     function toAscii(s){
