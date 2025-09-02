@@ -166,7 +166,7 @@
       qrModal.style.display='flex';
     }
     closeQr.addEventListener('click', ()=> qrModal.style.display='none');
-    btnCopy.addEventListener('click', ()=>{ navigator.clipboard.writeText(copiaCola.value).then(()=>alert('Código PIX copiado!')) });
+    btnCopy.addEventListener('click', ()=>{ navigator.clipboard.writeText(copiaCola.value)});
 
     // Helpers Pix
     function toAscii(s){
