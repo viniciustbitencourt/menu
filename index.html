@@ -64,6 +64,13 @@
       font-size:12px; color: var(--muted);
     }
     .inline-ok.show{ opacity:1; transform: translateY(0); }
+
+    /* layout específico da área de botões do PIX */
+    .btns-pix{ display:flex; gap:10px; align-items:flex-start; }
+    .btns-pix .btn{ flex:0 0 auto; }            /* não esticar */
+    .copy-wrap{ display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
+    .btn-copy{ padding:12px 18px; font-size:15px; font-weight:800; }  /* maior que Fechar */
+    .btn-close{ padding:10px 12px; font-size:14px; }                  /* menor */
   </style>
 </head>
 <body>
@@ -88,10 +95,14 @@
         <div style="flex:1;min-width:220px">
           <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Copia e Cola</div>
           <textarea id="pixCopiaCola" readonly class="field" style="min-height:120px"></textarea>
-          <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
-            <button id="btnCopy" class="btn">Copiar</button>
-            <span id="copyMsg" class="inline-ok" role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">Copiado!</span>
-            <button id="closeQr" class="btn" style="margin-left:auto">Fechar</button>
+
+          <!-- botões: copiar (maior) + mensagem abaixo + fechar -->
+          <div class="btns-pix" style="margin-top:10px">
+            <div class="copy-wrap">
+              <button id="btnCopy" class="btn btn-copy">Copiar</button>
+              <span id="copyMsg" class="inline-ok" role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">Copiado!</span>
+            </div>
+            <button id="closeQr" class="btn btn-close" style="margin-left:auto">Fechar</button>
           </div>
         </div>
       </div>
@@ -114,16 +125,16 @@
 
     // ================== PRODUTOS ==================
     const produtos = [
-      { id:'jameson750', nome:'Whisky Jameson', volume:'750 ml', preco:160.00, categoria:'whisky', imagem:'https://images.unsplash.com/photo-1617727553256-4f384ee199fe?q=80&w=1600&auto=format&fit=crop', destaque:'Mais vendido' },
-      { id:'absolut1l', nome:'Vodka Absolut', volume:'1 L', preco:160.00, categoria:'vodka', imagem:'https://images.unsplash.com/photo-1613977257598-b7fef2f47266?q=80&w=1600&auto=format&fit=crop' },
-      { id:'redlabel1l', nome:'Whisky Johnnie Walker Red Label', volume:'1 L', preco:105.00, categoria:'whisky', imagem:'https://images.unsplash.com/photo-1608889175211-0e8c135fdb21?q=80&w=1600&auto=format&fit=crop', destaque:'Oferta do dia' },
-      { id:'smirnoff1l', nome:'Vodka Smirnoff', volume:'1 L', preco:69.90, categoria:'vodka', imagem:'https://images.unsplash.com/photo-1613478223719-2c0c1a9f5a8f?q=80&w=1600&auto=format&fit=crop' },
-      { id:'tanqueray750', nome:'Gin Tanqueray', volume:'750 ml', preco:139.90, categoria:'gin', imagem:'https://images.unsplash.com/photo-1595975432201-28f98ef4c8d2?q=80&w=1600&auto=format&fit=crop' },
-      { id:'gordons750', nome:"Gin Gordon's", volume:'750 ml', preco:89.90, categoria:'gin', imagem:'https://images.unsplash.com/photo-1604908554007-0bced5f2a3a5?q=80&w=1600&auto=format&fit=crop' },
-      { id:'tequilaJose', nome:'Tequila Jose Cuervo Gold', volume:'750 ml', preco:149.90, categoria:'tequila', imagem:'https://images.unsplash.com/photo-1603394385224-7b20085c0d49?q=80&w=1600&auto=format&fit=crop' },
-      { id:'rumBacardi', nome:'Rum Bacardí Carta Blanca', volume:'980 ml', preco:79.90, categoria:'rum', imagem:'https://images.unsplash.com/photo-1514362545857-3bc16c4c76f2?q=80&w=1600&auto=format&fit=crop' },
-      { id:'tonica', nome:'Água Tônica', volume:'350 ml (lata)', preco:7.00, categoria:'semalcool', imagem:'https://images.unsplash.com/photo-1541592553160-82008b127ccb?q=80&w=1600&auto=format&fit=crop' },
-      { id:'energetico', nome:'Energético', volume:'473 ml', preco:12.00, categoria:'semalcool', imagem:'https://images.unsplash.com/photo-1613478223719-2c0c1a9f5a8f?q=80&w=1600&auto=format&fit=crop' }
+      { id:'jameson750', nome:'Whisky Jameson', volume:'750 ml', preco:160.00, categoria:'whisky', imagem:'/img/whisky-01.jpg', destaque:'Mais vendido' },
+      { id:'absolut1l', nome:'Vodka Absolut', volume:'1 L', preco:160.00, categoria:'vodka', imagem:'/img/vodka-greygoose.jpg' },
+      { id:'redlabel1l', nome:'Whisky Johnnie Walker Red Label', volume:'1 L', preco:105.00, categoria:'whisky', imagem:'/img/whisky-02.jpg', destaque:'Oferta do dia' },
+      { id:'smirnoff1l', nome:'Vodka Smirnoff', volume:'1 L', preco:69.90, categoria:'vodka', imagem:'/img/vodka-smirnoff.jpg' },
+      { id:'tanqueray750', nome:'Gin Tanqueray', volume:'750 ml', preco:139.90, categoria:'gin', imagem:'/img/gin-tanqueray-01.jpg' },
+      { id:'gordons750', nome:"Gin Gordon's", volume:'750 ml', preco:89.90, categoria:'gin', imagem:'/img/gin-bottle-01.jpg' },
+      { id:'tequilaJose', nome:'Tequila Jose Cuervo Gold', volume:'750 ml', preco:149.90, categoria:'tequila', imagem:'/img/tequila-cuervo-01.jpg' },
+      { id:'rumBacardi', nome:'Rum Bacardí Carta Blanca', volume:'980 ml', preco:79.90, categoria:'rum', imagem:'/img/rum-bacardi-01.jpg' },
+      { id:'tonica', nome:'Água Tônica', volume:'350 ml (lata)', preco:7.00, categoria:'semalcool', imagem:'/img/tonica-01.jpg' },
+      { id:'energetico', nome:'Energético', volume:'473 ml', preco:12.00, categoria:'semalcool', imagem:'/img/energetico-redbull-01.jpg' }
     ];
 
     // ================== RENDER ==================
