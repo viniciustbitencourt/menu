@@ -3,135 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🍹 Cardápio de Bebidas</title>
-  <meta name="description" content="Cardápio digital de bebidas para hóspedes." />
+  <title>Cardápio de Bebidas</title>
+  <meta name="description" content="Cardápio digital de bebidas com pagamento por PIX via QR Code." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0f172a;
-      --card:#111827ee;
-      --muted:#94a3b8;
-      --text:#e5e7eb;
-      --accent:#22d3ee;
-      --accent-2:#7c3aed;
-      --ok:#22c55e;
-      --warn:#f97316;
+      /* Paleta escura veraneio nocturno */
+      --bg:#0b1220;         /* azul noite */
+      --bg2:#0e162a;        /* azul profundo */
+      --card:#10192f;       /* cartão */
+      --card2:#0d1529;      
+      --border:#1e2a44;     
+      --text:#e6edf3;       /* texto claro */
+      --muted:#9fb0c6;      /* texto secundário */
+      --accent:#22d3ee;     /* turquesa */
+      --accent2:#7c3aed;    /* violeta */
+      --accent3:#f59e0b;    /* dourado areia */
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,'Noto Sans',sans-serif;background:radial-gradient(1200px 600px at 20% -10%,#1e293b 0%,#0b1223 40%,#090f1d 100%), var(--bg);color:var(--text)}
-    header{position:sticky;top:0;background:linear-gradient(180deg,#0b1223 40%,#0b1223cc 100%);backdrop-filter:blur(6px);border-bottom:1px solid #1f2937;z-index:10}
-    .wrap{max-width:1080px;margin:auto;padding:20px}
-    .topbar{display:flex;gap:16px;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 180deg,var(--accent),var(--accent-2));filter:saturate(1.2);box-shadow:0 10px 30px #22d3ee30}
-    h1{margin:0;font-size:20px;letter-spacing:.3px}
-    .hint{font-size:12px;color:var(--muted)}
-    .controls{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
-    @media(min-width:780px){.controls{grid-template-columns:1fr 380px}}
-    .search{display:flex;align-items:center;gap:10px;background:#0b1020;border:1px solid #1f2937;border-radius:14px;padding:10px 14px}
-    .search input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font-size:14px}
-    .chips{display:flex;flex-wrap:wrap;gap:10px}
-    .chip{padding:8px 12px;border:1px solid #1f2937;border-radius:999px;background:#0b1020;color:var(--text);font-size:12px;cursor:pointer;user-select:none}
-    .chip.active{border-color:var(--accent);box-shadow:0 0 0 2px #22d3ee30 inset}
-    main{max-width:1080px;margin:20px auto;padding:0 20px}
+    html,body{height:100%}
+    body{margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,'Noto Sans',sans-serif;color:var(--text);background:
+      radial-gradient(1200px 600px at 15% -10%, #16243e 0%, transparent 40%),
+      radial-gradient(1000px 600px at 85% -20%, #102139 0%, transparent 45%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg2) 70%);
+    }
+
+    /* HERO minimalista */
+    header{position:relative}
+    .hero-wrap{max-width:1100px;margin:auto;padding:36px 20px 8px}
+    .topbar{display:flex;align-items:center;justify-content:center}
+    .logo{width:54px;height:54px;border-radius:16px;background:conic-gradient(from 180deg,var(--accent),var(--accent2));box-shadow:0 10px 30px #22d3ee30;margin-right:12px}
+    h1{margin:0;font-size:28px;letter-spacing:.3px}
+
+    .wave{position:relative;margin-top:18px}
+    .wave svg{display:block;width:100%;height:auto}
+
+    /* GRID */
+    main{max-width:1100px;margin:18px auto 0;padding:0 20px}
     .grid{display:grid;gap:16px;grid-template-columns:1fr}
     @media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{position:relative;background:linear-gradient(180deg,#0f1328,#0c1222);border:1px solid #1f2937;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px #00000055}
-    .hero{position:relative;height:180px;background:#0b0f1b}
-    .hero img{width:100%;height:100%;object-fit:cover;opacity:.9;filter:saturate(1.02)}
-    .badge{position:absolute;top:10px;left:10px;padding:6px 10px;border-radius:999px;background:#0b1020;border:1px solid #1f2937;color:var(--muted);font-size:11px}
-    .badge.promo{color:#111827;background:linear-gradient(90deg,var(--accent),var(--accent-2));border:0;font-weight:700}
+
+    /* CARD */
+    .card{position:relative;background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 12px 26px #00000040}
+    .hero-img{position:relative;height:180px;background:#0f1830}
+    .hero-img img{width:100%;height:100%;object-fit:cover;opacity:.92}
+    .badge{position:absolute;top:10px;left:10px;padding:6px 10px;border-radius:999px;background:#0c152b;border:1px solid var(--border);font-size:11px;color:var(--muted)}
+    .badge.promo{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b0f1b;border:0;font-weight:700}
     .content{padding:14px 14px 16px}
     .title{margin:4px 0 6px;font-size:16px}
     .meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}
     .price{margin:12px 0 10px;font-size:18px;font-weight:800;letter-spacing:.2px}
     .btns{display:flex;gap:10px}
-    .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;border:1px solid #243041;background:#0b1020;color:var(--text)}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#0b0f1b}
+    .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;border:1px solid var(--border);background:#0c152b;color:var(--text)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#0b0f1b}
     .btn:hover{transform:translateY(-1px)}
-    footer{max-width:1080px;margin:40px auto 80px;padding:0 20px;color:var(--muted);font-size:12px}
-    .notice{border:1px dashed #334155;padding:12px 14px;border-radius:14px;background:#0b1020}
-    .qr-hint{margin-top:14px;font-size:12px;color:var(--muted)}
-    .qr-hint code{background:#0b1020;border:1px solid #1f2937;padding:2px 6px;border-radius:6px}
+
+    footer{max-width:1100px;margin:40px auto 80px;padding:0 20px;color:var(--muted);font-size:12px}
+    .notice{border:1px dashed var(--border);padding:12px 14px;border-radius:14px;background:#0c152b}
+
+    /* MODAL GENÉRICO */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#0007;z-index:50}
+    .modal-card{width:min(560px,92vw);background:#0c152b;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 10px 30px #00000066}
+    .modal h3{margin:0 0 12px}
+    .modal p{color:var(--muted);font-size:12px;margin:0 0 10px}
+    .field{width:100%;margin-top:6px;background:#0b1220;border:1px solid var(--border);border-radius:10px;color:var(--text);padding:10px}
+    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
+    .btn-ghost{border:1px solid var(--border);background:#0b1220}
   </style>
 </head>
 <body>
   <header>
-    <div class="wrap">
+    <div class="hero-wrap">
       <div class="topbar">
-        <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <div>
-            <h1>Cardápio de Bebidas</h1>
-            <div class="hint">Casa de Praia · Atendimento via WhatsApp e PIX</div>
-          </div>
-        </div>
-        <div>
-          <button id="btnCfg" class="btn" style="border:1px solid #334155;background:#0f172a;padding:10px 14px;border-radius:10px;color:#e5e7eb">⚙️ Configurar PIX</button>
-        </div>
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Cardápio de Bebidas</h1>
       </div>
-          <div>
-            <h1>Cardápio de Bebidas</h1>
-            <div class="hint">Casa de Praia · Atendimento via WhatsApp</div>
-          </div>
-        </div>
-      </div>
-      <div class="controls">
-        <div class="search" role="search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 21l-4.3-4.3" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="#94a3b8" stroke-width="2"/></svg>
-          <input id="q" type="search" placeholder="Buscar por nome, tipo ou volume…" />
-        </div>
-        <div class="chips" aria-label="Filtros de categoria">
-          <div class="chip active" data-cat="all">Todos</div>
-          <div class="chip" data-cat="whisky">Whisky</div>
-          <div class="chip" data-cat="vodka">Vodka</div>
-          <div class="chip" data-cat="gin">Gin</div>
-          <div class="chip" data-cat="tequila">Tequila</div>
-          <div class="chip" data-cat="rum">Rum</div>
-          <div class="chip" data-cat="semalcool">Sem álcool</div>
-        </div>
-      </div>
-      <div class="qr-hint">Dica: Gere um QR Code apontando para este link do GitHub Pages e cole na casa. Ex.: <code>https://seuusuario.github.io/cardapio</code></div>
+    </div>
+    <div class="wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,80 C240,140 480,20 720,60 C960,100 1200,120 1440,60 L1440,120 L0,120 Z" fill="#0e162a"></path></svg>
     </div>
   </header>
 
-  <!-- Modais -->
-  <div id="pixConfigModal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#0009;z-index:50">
-    <div style="width:min(560px,92vw);background:#0b1020;border:1px solid #1f2937;border-radius:16px;padding:18px">
-      <h3 style="margin:0 0 12px">Configurar PIX</h3>
-      <p style="color:#94a3b8;font-size:12px;margin:0 0 10px">Esses dados ficam salvos apenas no seu navegador (localStorage).</p>
-      <div style="display:grid;gap:10px">
-        <label>Chave PIX
-          <input id="pixKey" placeholder="CPF/CNPJ, telefone, e-mail ou chave aleatória" style="width:100%;margin-top:6px;background:#0f172a;border:1px solid #1f2937;border-radius:10px;color:#e5e7eb;padding:10px"/>
-        </label>
-        <label>Nome do recebedor (máx. 25)
-          <input id="pixName" placeholder="Ex.: CASA PRAIA" style="width:100%;margin-top:6px;background:#0f172a;border:1px solid #1f2937;border-radius:10px;color:#e5e7eb;padding:10px"/>
-        </label>
-        <label>Cidade (máx. 15)
-          <input id="pixCity" placeholder="Ex.: PRAIAGRANDE" style="width:100%;margin-top:6px;background:#0f172a;border:1px solid #1f2937;border-radius:10px;color:#e5e7eb;padding:10px"/>
-        </label>
-      </div>
-      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
-        <button id="closeCfg" class="btn" style="border:1px solid #334155;background:#0f172a;padding:10px 14px;border-radius:10px;color:#e5e7eb">Cancelar</button>
-        <button id="saveCfg" class="btn primary" style="background:linear-gradient(90deg,#22d3ee,#7c3aed);border:0;padding:10px 14px;border-radius:10px;color:#0b0f1b;font-weight:700">Salvar</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="pixQrModal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#0009;z-index:50">
-    <div style="width:min(560px,92vw);background:#0b1020;border:1px solid #1f2937;border-radius:16px;padding:18px">
-      <h3 id="pixTitle" style="margin:0 0 8px">Pagar com PIX</h3>
+  <!-- Modal QR PIX -->
+  <div id="pixQrModal" class="modal">
+    <div class="modal-card">
+      <h3 id="pixTitle">Pagar com PIX</h3>
       <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
-        <img id="pixQrImg" alt="QR Code PIX" style="width:240px;height:240px;border-radius:12px;border:1px solid #1f2937;background:#0f172a;object-fit:contain"/>
+        <img id="pixQrImg" alt="QR Code PIX" style="width:240px;height:240px;border-radius:12px;border:1px solid var(--border);background:#0b1220;object-fit:contain"/>
         <div style="flex:1;min-width:220px">
-          <div style="font-size:12px;color:#94a3b8;margin-bottom:6px">Copia e Cola</div>
-          <textarea id="pixCopiaCola" readonly style="width:100%;min-height:120px;background:#0f172a;border:1px solid #1f2937;border-radius:10px;color:#e5e7eb;padding:10px"></textarea>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Copia e Cola</div>
+          <textarea id="pixCopiaCola" readonly class="field" style="min-height:120px"></textarea>
           <div style="display:flex;gap:10px;margin-top:10px">
-            <button id="btnCopy" class="btn" style="border:1px solid #334155;background:#0f172a;padding:10px 14px;border-radius:10px;color:#e5e7eb">Copiar</button>
-            <a id="btnDownload" class="btn primary" style="text-decoration:none;background:linear-gradient(90deg,#22d3ee,#7c3aed);border:0;padding:10px 14px;border-radius:10px;color:#0b0f1b;font-weight:700" download="pix-qrcode.png">Baixar QR</a>
-            <button id="closeQr" class="btn" style="border:1px solid #334155;background:#0f172a;padding:10px 14px;border-radius:10px;color:#e5e7eb;margin-left:auto">Fechar</button>
+            <button id="btnCopy" class="btn">Copiar</button>
+            <a id="btnDownload" class="btn primary" download="pix-qrcode.png">Baixar QR</a>
+            <button id="closeQr" class="btn" style="margin-left:auto">Fechar</button>
           </div>
         </div>
       </div>
@@ -143,188 +110,53 @@
   </main>
 
   <footer>
-    <div class="notice">
-      ⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade.
-    </div>
+    <div class="notice">⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade.</div>
   </footer>
 
   <script>
-    const WHATSAPP_NUMBER = '55SEUDDDSEUNUMERO'; // Ex.: 5511987654321
+    // ================== CONFIG FIXA DE PIX ==================
+    // Substitua os valores abaixo pelo SEU PIX. "PIX_KEY" pode ser telefone (no formato +55DDDN...), e-mail, CPF/CNPJ ou chave aleatória.
+    const PIX_KEY = '+55SEUDDDSEUNUMERO';   // Ex.: +5511987654321
+    const RECEIVER_NAME = 'CASA DE PRAIA';   // máx 25 caracteres
+    const RECEIVER_CITY = 'PRAIA GRANDE';    // máx 15 caracteres
 
+    // Produtos (preços já personalizados)
     const produtos = [
-      {
-        id: 'jameson750',
-        nome: 'Whisky Jameson',
-        volume: '750 ml',
-        preco: 160.00,
-        categoria: 'whisky',
-        imagem: 'https://images.unsplash.com/photo-1617727553256-4f384ee199fe?q=80&w=1600&auto=format&fit=crop',
-        destaque: 'Mais vendido'
-      },
-      {
-        id: 'absolut1l',
-        nome: 'Vodka Absolut',
-        volume: '1 L',
-        preco: 160.00,
-        categoria: 'vodka',
-        imagem: 'https://images.unsplash.com/photo-1613977257598-b7fef2f47266?q=80&w=1600&auto=format&fit=crop'
-      },
-      {
-        id: 'redlabel1l',
-        nome: 'Whisky Johnnie Walker Red Label',
-        volume: '1 L',
-        preco: 105.00,
-        categoria: 'whisky',
-        imagem: 'https://images.unsplash.com/photo-1608889175211-0e8c135fdb21?q=80&w=1600&auto=format&fit=crop',
-        destaque: 'Oferta do dia'
-      },
-      {
-        id: 'smirnoff1l',
-        nome: 'Vodka Smirnoff',
-        volume: '1 L',
-        preco: 69.90,
-        categoria: 'vodka',
-        imagem: 'https://images.unsplash.com/photo-1613478223719-2c0c1a9f5a8f?q=80&w=1600&auto=format&fit=crop'
-      },
-      {
-        id: 'tanqueray750',
-        nome: 'Gin Tanqueray',
-        volume: '750 ml',
-        preco: 139.90,
-        categoria: 'gin',
-        imagem: 'https://images.unsplash.com/photo-1595975432201-28f98ef4c8d2?q=80&w=1600&auto=format&fit=crop'
-      },
-      {
-        id: 'gordons750',
-        nome: "Gin Gordon's",
-        volume: '750 ml',
-        preco: 89.90,
-        categoria: 'gin',
-        imagem: 'https://images.unsplash.com/photo-1604908554007-0bced5f2a3a5?q=80&w=1600&auto=format&fit=crop'
-      },
-      {
-        id: 'tequilaJose',
-        nome: 'Tequila Jose Cuervo Gold',
-        volume: '750 ml',
-        preco: 149.90,
-        categoria: 'tequila',
-        imagem: 'https://images.unsplash.com/photo-1603394385224-7b20085c0d49?q=80&w=1600&auto=format&fit=crop'
-      },
-      {
-        id: 'rumBacardi',
-        nome: 'Rum Bacardí Carta Blanca',
-        volume: '980 ml',
-        preco: 79.90,
-        categoria: 'rum',
-        imagem: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c76f2?q=80&w=1600&auto=format&fit=crop'
-      },
-      {
-        id: 'tonica',
-        nome: 'Água Tônica',
-        volume: '350 ml (lata)',
-        preco: 7.00,
-        categoria: 'semalcool',
-        imagem: 'https://images.unsplash.com/photo-1541592553160-82008b127ccb?q=80&w=1600&auto=format&fit=crop'
-      },
-      {
-        id: 'energetico',
-        nome: 'Energético',
-        volume: '473 ml',
-        preco: 12.00,
-        categoria: 'semalcool',
-        imagem: 'https://images.unsplash.com/photo-1613478223719-2c0c1a9f5a8f?q=80&w=1600&auto=format&fit=crop'
-      }
+      { id:'jameson750', nome:'Whisky Jameson', volume:'750 ml', preco:160.00, categoria:'whisky', imagem:'https://images.unsplash.com/photo-1617727553256-4f384ee199fe?q=80&w=1600&auto=format&fit=crop', destaque:'Mais vendido' },
+      { id:'absolut1l', nome:'Vodka Absolut', volume:'1 L', preco:160.00, categoria:'vodka', imagem:'https://images.unsplash.com/photo-1613977257598-b7fef2f47266?q=80&w=1600&auto=format&fit=crop' },
+      { id:'redlabel1l', nome:'Whisky Johnnie Walker Red Label', volume:'1 L', preco:105.00, categoria:'whisky', imagem:'https://images.unsplash.com/photo-1608889175211-0e8c135fdb21?q=80&w=1600&auto=format&fit=crop', destaque:'Oferta do dia' },
+      { id:'smirnoff1l', nome:'Vodka Smirnoff', volume:'1 L', preco:69.90, categoria:'vodka', imagem:'https://images.unsplash.com/photo-1613478223719-2c0c1a9f5a8f?q=80&w=1600&auto=format&fit=crop' },
+      { id:'tanqueray750', nome:'Gin Tanqueray', volume:'750 ml', preco:139.90, categoria:'gin', imagem:'https://images.unsplash.com/photo-1595975432201-28f98ef4c8d2?q=80&w=1600&auto=format&fit=crop' },
+      { id:'gordons750', nome:"Gin Gordon's", volume:'750 ml', preco:89.90, categoria:'gin', imagem:'https://images.unsplash.com/photo-1604908554007-0bced5f2a3a5?q=80&w=1600&auto=format&fit=crop' },
+      { id:'tequilaJose', nome:'Tequila Jose Cuervo Gold', volume:'750 ml', preco:149.90, categoria:'tequila', imagem:'https://images.unsplash.com/photo-1603394385224-7b20085c0d49?q=80&w=1600&auto=format&fit=crop' },
+      { id:'rumBacardi', nome:'Rum Bacardí Carta Blanca', volume:'980 ml', preco:79.90, categoria:'rum', imagem:'https://images.unsplash.com/photo-1514362545857-3bc16c4c76f2?q=80&w=1600&auto=format&fit=crop' },
+      { id:'tonica', nome:'Água Tônica', volume:'350 ml (lata)', preco:7.00, categoria:'semalcool', imagem:'https://images.unsplash.com/photo-1541592553160-82008b127ccb?q=80&w=1600&auto=format&fit=crop' },
+      { id:'energetico', nome:'Energético', volume:'473 ml', preco:12.00, categoria:'semalcool', imagem:'https://images.unsplash.com/photo-1613478223719-2c0c1a9f5a8f?q=80&w=1600&auto=format&fit=crop' }
     ];
 
+    // ================== RENDER ==================
     const grid = document.getElementById('grid');
-
-    function currency(v){
-      return v.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-    }
-
+    function currency(v){ return v.toLocaleString('pt-BR', { style:'currency', currency:'BRL' }) }
     function cardHTML(p){
       return `
-        <article class="card" data-cat="${p.categoria}" data-name="${(p.nome + ' ' + p.volume).toLowerCase()}">
-          <div class="hero">
+        <article class="card" data-cat="${p.categoria}">
+          <div class="hero-img">
             <img src="${p.imagem}" alt="${p.nome} ${p.volume}" loading="lazy"/>
-            ${p.destaque ? `<span class="badge promo">${p.destaque}</span>` : `<span class="badge">${p.categoria}</span>`}
+            ${p.destaque ? `<span class=\"badge promo\">${p.destaque}</span>` : `<span class=\"badge\">${p.categoria}</span>`}
           </div>
           <div class="content">
             <h2 class="title">${p.nome}</h2>
-            <div class="meta">
-              <span>Volume: ${p.volume}</span>
-              <span>•</span>
-              <span>Categoria: ${p.categoria}</span>
-            </div>
+            <div class="meta"><span>Volume: ${p.volume}</span><span>•</span><span>Categoria: ${p.categoria}</span></div>
             <div class="price">${currency(p.preco)}</div>
             <div class="btns">
-              <a class="btn" href="#" onclick="shareItem('${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}','${p.preco}')">Compartilhar</a>
-              <a class="btn primary" href="#" onclick="pedirWhats('${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}','${p.preco}')">WhatsApp</a>
-              <a class="btn" href="#" onclick="abrirPix('${encodeURIComponent(p.id)}','${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}', ${p.preco})">PIX</a>
+              <a class="btn primary" href="#" onclick="abrirPix('${encodeURIComponent(p.id)}','${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}', ${p.preco})">PIX (QR)</a>
             </div>
           </div>
-        </article>
-      `;
+        </article>`;
     }
+    function render(list){ grid.innerHTML = list.map(cardHTML).join('') }
 
-    function render(list){
-      grid.innerHTML = list.map(cardHTML).join('');
-    }
-
-    function pedirWhats(nomeEncoded, volumeEncoded, preco){
-      const nome = decodeURIComponent(nomeEncoded);
-      const volume = decodeURIComponent(volumeEncoded);
-      const msg = `Olá! Quero *${nome}* (${volume}). Preço anunciado: ${currency(Number(preco))}.`;
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-      window.open(url,'_blank');
-    }
-
-    function shareItem(nomeEncoded, volumeEncoded, preco){
-      const nome = decodeURIComponent(nomeEncoded);
-      const volume = decodeURIComponent(volumeEncoded);
-      const texto = `${nome} (${volume}) - ${currency(Number(preco))}\nVeja todo o cardápio: ${location.href}`;
-      if(navigator.share){
-        navigator.share({ title: `${nome} - ${currency(Number(preco))}`, text: texto, url: location.href });
-      } else {
-        navigator.clipboard.writeText(texto);
-        alert('Link copiado!');
-      }
-    }
-
-    const chips = document.querySelectorAll('.chip');
-    chips.forEach(c => c.addEventListener('click', () => {
-      chips.forEach(x => x.classList.remove('active'));
-      c.classList.add('active');
-      const cat = c.getAttribute('data-cat');
-      filtrar(cat, document.getElementById('q').value);
-    }));
-
-    document.getElementById('q').addEventListener('input', (e)=>{
-      const active = document.querySelector('.chip.active').getAttribute('data-cat');
-      filtrar(active, e.target.value);
-    });
-
-    function filtrar(cat, q){
-      q = (q||'').toLowerCase();
-      const list = produtos.filter(p => {
-        const byCat = (cat === 'all') || (p.categoria === cat);
-        const byText = (p.nome + ' ' + p.volume + ' ' + p.categoria).toLowerCase().includes(q);
-        return byCat && byText;
-      });
-      render(list);
-    }
-
-    render(produtos);
-
-    // ======== PIX ========
-    const cfgBtn = document.getElementById('btnCfg');
-    const cfgModal = document.getElementById('pixConfigModal');
-    const closeCfg = document.getElementById('closeCfg');
-    const saveCfg = document.getElementById('saveCfg');
-    const keyInput = document.getElementById('pixKey');
-    const nameInput = document.getElementById('pixName');
-    const cityInput = document.getElementById('pixCity');
-
+    // ================== PIX (fixo) ==================
     const qrModal = document.getElementById('pixQrModal');
     const qrImg = document.getElementById('pixQrImg');
     const copiaCola = document.getElementById('pixCopiaCola');
@@ -333,48 +165,14 @@
     const btnDownload = document.getElementById('btnDownload');
     const closeQr = document.getElementById('closeQr');
 
-    const storage = {
-      load(){
-        try{ const d = JSON.parse(localStorage.getItem('pixcfg')||'{}'); return d }catch{ return {} }
-      },
-      save(data){ localStorage.setItem('pixcfg', JSON.stringify(data)) }
-    }
-
-    function openCfg(){
-      const d = storage.load();
-      keyInput.value = d.key||'';
-      nameInput.value = d.name||'';
-      cityInput.value = d.city||'';
-      cfgModal.style.display='flex';
-    }
-    function closeCfgModal(){ cfgModal.style.display='none' }
-
-    cfgBtn.addEventListener('click', openCfg);
-    closeCfg.addEventListener('click', closeCfgModal);
-
-    saveCfg.addEventListener('click', ()=>{
-      const data = {
-        key: keyInput.value.trim(),
-        name: (nameInput.value||'').toUpperCase().slice(0,25) || 'HOSPEDE',
-        city: (cityInput.value||'').toUpperCase().slice(0,15) || 'BRASIL'
-      };
-      if(!data.key){ alert('Informe sua chave PIX.'); return }
-      storage.save(data);
-      closeCfgModal();
-      alert('Configurações salvas!');
-    });
-
     function abrirPix(idEnc, nomeEnc, volumeEnc, preco){
-      const cfg = storage.load();
-      if(!cfg.key){ openCfg(); return }
       const nome = decodeURIComponent(nomeEnc);
       const volume = decodeURIComponent(volumeEnc);
       const txid = (decodeURIComponent(idEnc).slice(0,20) + Date.now().toString().slice(-5)).slice(0,25);
       const descr = (nome + ' ' + volume).slice(0,50);
-      const payload = montarPix(cfg.key, cfg.name, cfg.city, preco, txid, descr);
+      const payload = montarPix(PIX_KEY, RECEIVER_NAME, RECEIVER_CITY, preco, txid, descr);
       mostrarQrPix(`${nome} — ${currency(preco)}`, payload);
     }
-
     function mostrarQrPix(titulo, payload){
       pixTitle.textContent = titulo;
       copiaCola.value = payload;
@@ -383,23 +181,16 @@
       btnDownload.href = url;
       qrModal.style.display='flex';
     }
-
     closeQr.addEventListener('click', ()=> qrModal.style.display='none');
-    btnCopy.addEventListener('click', ()=>{
-      navigator.clipboard.writeText(copiaCola.value).then(()=>alert('Código PIX copiado!'))
-    });
+    btnCopy.addEventListener('click', ()=>{ navigator.clipboard.writeText(copiaCola.value).then(()=>alert('Código PIX copiado!')) });
 
-    // Montagem do BR Code (EMVCo) para PIX
+    // Montagem BR Code (EMVCo) PIX com CRC16
     function montarPix(chave, nome, cidade, valor, txid, descricao){
-      function tlv(id, value){
-        const len = value.length.toString().padStart(2, '0');
-        return id + len + value;
-      }
+      function tlv(id, value){ const len=value.length.toString().padStart(2,'0'); return id+len+value }
       const gui = tlv('00','br.gov.bcb.pix');
       const guiKey = tlv('01', chave);
       const guiDesc = descricao ? tlv('02', descricao) : '';
       const mai = tlv('26', gui + guiKey + guiDesc);
-
       const mcc = tlv('52','0000');
       const cur = tlv('53','986');
       const amt = valor ? tlv('54', Number(valor).toFixed(2)) : '';
@@ -408,29 +199,14 @@
       const mcity = tlv('60', (cidade||'BRASIL').toUpperCase().slice(0,15));
       const adtx = tlv('05', (txid||'CARDAPIO').slice(0,25));
       const add = tlv('62', adtx);
-
       const payloadSemCRC = tlv('00','01') + tlv('01','11') + mai + mcc + cur + amt + country + mname + mcity + add + '6304';
       const crc = crc16(payloadSemCRC).toUpperCase();
       return payloadSemCRC + crc;
     }
+    function crc16(str){ let crc=0xFFFF; for(let i=0;i<str.length;i++){ crc ^= str.charCodeAt(i)<<8; for(let j=0;j<8;j++){ if (crc & 0x8000){ crc=(crc<<1)^0x1021 } else { crc=(crc<<1) } crc &= 0xFFFF } } return crc.toString(16).padStart(4,'0') }
 
-    // CRC16-CCITT (0x1021) inicial 0xFFFF
-    function crc16(str){
-      let crc = 0xFFFF;
-      for (let i=0; i<str.length; i++){
-        crc ^= str.charCodeAt(i) << 8;
-        for (let j=0; j<8; j++){
-          if (crc & 0x8000){
-            crc = (crc << 1) ^ 0x1021;
-          } else {
-            crc = (crc << 1);
-          }
-          crc &= 0xFFFF;
-        }
-      }
-      return crc.toString(16).padStart(4,'0');
-    }
-
+    // Inicializa
+    render(produtos);
   </script>
 </body>
 </html>
