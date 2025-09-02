@@ -41,10 +41,10 @@
       border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 12px 26px #00000040
     }
 
-    /* >>> IMAGEM DO CARD: agora responsiva e MAIOR */
+    /* >>> IMAGEM DO CARD responsiva e maior */
     .hero-img{
       position:relative;background:#0f1830;
-      aspect-ratio: 4 / 3;   /* altura cresce de acordo com a largura do card */
+      aspect-ratio: 4 / 3;
     }
     .hero-img img{
       width:100%;height:100%;object-fit:cover;opacity:.92;display:block
@@ -52,6 +52,12 @@
 
     .badge{position:absolute;top:10px;left:10px;padding:6px 10px;border-radius:999px;background:#0c152b;border:1px solid var(--border);font-size:11px;color:var(--muted)}
     .badge.promo{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b0f1b;border:0;font-weight:700}
+    /* >>> NOVA BADGE: Sem estoque */
+    .badge.out{
+      background:#3b0d0d;border-color:#7f1d1d;color:#fecaca;font-weight:800;
+      text-transform:uppercase;letter-spacing:.3px;
+    }
+
     .content{padding:14px 14px 16px}
     .title{margin:4px 0 6px;font-size:16px}
     .meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}
@@ -65,6 +71,8 @@
     }
     .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;color:#0b0f1b}
     .btn:hover{transform:translateY(-1px)}
+    /* >>> botão desabilitado quando sem estoque */
+    .btn.disabled{opacity:.45;cursor:not-allowed;pointer-events:none;filter:saturate(.6)}
 
     footer{max-width:1100px;margin:40px auto 80px;padding:0 20px;color:var(--muted);font-size:12px}
     .notice{border:1px dashed var(--border);padding:12px 14px;border-radius:14px;background:#0c152b}
@@ -76,7 +84,7 @@
 
     /* >>> QR CODE responsivo */
     .qr-img{
-      width:min(360px, 100%);   /* até 360px, mas encolhe em telas menores */
+      width:min(360px, 100%);
       aspect-ratio: 1 / 1;
       height:auto;
       border-radius:12px;border:1px solid var(--border);background:#0b1220;object-fit:contain;display:block
@@ -92,10 +100,10 @@
 
     /* layout específico da área de botões do PIX */
     .btns-pix{ display:flex; gap:10px; align-items:flex-start; }
-    .btns-pix .btn{ flex:0 0 auto; }            /* não esticar */
+    .btns-pix .btn{ flex:0 0 auto; }
     .copy-wrap{ display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
-    .btn-copy{ padding:12px 18px; font-size:15px; font-weight:800; }  /* maior que Fechar */
-    .btn-close{ padding:10px 12px; font-size:14px; }                  /* menor */
+    .btn-copy{ padding:12px 18px; font-size:15px; font-weight:800; }
+    .btn-close{ padding:10px 12px; font-size:14px; }
   </style>
 </head>
 <body>
@@ -139,7 +147,7 @@
   </main>
 
   <footer>
-    <div class="notice">⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade.</div>
+    <div class="notice">⚠️ Vendas apenas para maiores de 18 anos. Beba com moderação. Preços sujeitos a alteração e disponibilidade. Imagem ilustrativa.</div>
   </footer>
 
   <script>
@@ -148,36 +156,57 @@
     const RECEIVER_NAME = 'CASA DE PRAIA';
     const RECEIVER_CITY = 'BRASIL'; // exigido pelo padrão, não exibido
 
-    // ================== PRODUTOS (paths padronizados para img/...) ==================
+    // ================== PRODUTOS (use estoque: 0 p/ esgotado) ==================
     const produtos = [
-      { id:'jameson750', nome:'Whisky Jameson', volume:'750 ml', preco:160.00, categoria:'whisky', imagem:'img/whisky-01.jpg', destaque:'Mais vendido' },
-      { id:'absolut1l', nome:'Vodka Absolut', volume:'1 L', preco:160.00, categoria:'vodka', imagem:'img/vodka-absolute.jpg' },
-      { id:'redlabel1l', nome:'Whisky Johnnie Walker Red Label', volume:'1 L', preco:105.00, categoria:'whisky', imagem:'img/whisky-02.jpg', destaque:'Oferta do dia' },
-      { id:'smirnoff1l', nome:'Vodka Smirnoff', volume:'1 L', preco:69.90, categoria:'vodka', imagem:'img/vodka-smirnoff.jpg' },
-      { id:'tanqueray750', nome:'Gin Tanqueray', volume:'750 ml', preco:139.90, categoria:'gin', imagem:'img/gin-tanqueray-01.jpg' },
-      { id:'gordons750', nome:"Gin Gordon's", volume:'750 ml', preco:89.90, categoria:'gin', imagem:'img/gin-bottle-01.jpg' },
-      { id:'tequilaJose', nome:'Tequila Jose Cuervo Gold', volume:'750 ml', preco:149.90, categoria:'tequila', imagem:'img/tequila-cuervo-01.jpg' },
-      { id:'rumBacardi', nome:'Rum Bacardí Carta Blanca', volume:'980 ml', preco:79.90, categoria:'rum', imagem:'img/rum-bacardi-01.jpg' },
-      { id:'tonica', nome:'Água Tônica', volume:'350 ml (lata)', preco:7.00, categoria:'semalcool', imagem:'img/tonica-01.jpg' },
-      { id:'energetico', nome:'Energético', volume:'473 ml', preco:12.00, categoria:'semalcool', imagem:'img/energetico-redbull-01.jpg' }
+      { id:'jameson750', nome:'Whisky Jameson', volume:'750 ml', preco:160.00, categoria:'Whisky', imagem:'img/whisky-01.jpg', destaque:'Mais vendido', estoque: 1 },
+      { id:'absolut1l', nome:'Vodka Absolut', volume:'1 L', preco:160.00, categoria:'Vodka', imagem:'img/vodka-absolute.jpg', estoque: 1 },
+      { id:'redlabel1l', nome:'Whisky Johnnie Walker Red Label', volume:'1 L', preco:105.00, categoria:'Whisky', imagem:'img/whisky-02.jpg', destaque:'Oferta do dia', estoque: 0 },  // esgotado
+      { id:'smirnoff1l', nome:'Vodka Smirnoff', volume:'1 L', preco:69.90, categoria:'Vodka', imagem:'img/vodka-smirnoff.jpg', estoque: 1 },
+      { id:'tanqueray750', nome:'Gin Tanqueray', volume:'750 ml', preco:139.90, categoria:'Gin', imagem:'img/gin-tanqueray-01.jpg', estoque: 0 }, // esgotado
+      { id:'gordons750', nome:"Gin Gordon's", volume:'750 ml', preco:89.90, categoria:'Gin', imagem:'img/gin-bottle-01.jpg', estoque: 1 },
+      { id:'tequilaJose', nome:'Tequila Jose Cuervo Gold', volume:'750 ml', preco:149.90, categoria:'Tequila', imagem:'img/tequila-cuervo-01.jpg', estoque: 1 },
+      { id:'rumBacardi', nome:'Rum Bacardí Carta Blanca', volume:'980 ml', preco:79.90, categoria:'Rum', imagem:'img/rum-bacardi-01.jpg', estoque: 1 },
+      { id:'tonica', nome:'Água Tônica', volume:'350 ml (lata)', preco:7.00, categoria:'Sem alcool', imagem:'img/tonica-01.jpg', estoque: 1 },
+      { id:'energetico', nome:'Energético', volume:'473 ml', preco:12.00, categoria:'Sem alcool', imagem:'img/energetico-redbull-01.jpg', estoque: 0 } // esgotado
     ];
 
     // ================== RENDER ==================
     const grid = document.getElementById('grid');
     function currency(v){ return v.toLocaleString('pt-BR', { style:'currency', currency:'BRL' }) }
+
     function cardHTML(p){
+      const semEstoque = Number(p.estoque) === 0;
+
+      // Decide a badge (sem estoque > promo > categoria)
+      let badgeHtml = '';
+      if (semEstoque) {
+        badgeHtml = `<span class="badge out">Sem estoque</span>`;
+      } else if (p.destaque) {
+        badgeHtml = `<span class="badge promo">${p.destaque}</span>`;
+      } else {
+        badgeHtml = `<span class="badge">${p.categoria}</span>`;
+      }
+
+      // Botão PIX: desabilita se sem estoque
+      const btnPix = semEstoque
+        ? `<button class="btn primary disabled" aria-disabled="true" title="Sem estoque">PIX (indisponível)</button>`
+        : `<a class="btn primary" href="#" onclick="abrirPix('${encodeURIComponent(p.id)}','${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}', ${p.preco})">PIX (QR)</a>`;
+
       return `
         <article class="card" data-cat="${p.categoria}">
           <div class="hero-img">
             <img src="${p.imagem}" alt="${p.nome} ${p.volume}" loading="lazy" onerror="this.onerror=null;this.src='img/placeholder.jpg'"/>
-            ${p.destaque ? `<span class="badge promo">${p.destaque}</span>` : `<span class="badge">${p.categoria}</span>`}
+            ${badgeHtml}
           </div>
           <div class="content">
             <h2 class="title">${p.nome}</h2>
-            <div class="meta"><span>Volume: ${p.volume}</span><span>•</span><span>Categoria: ${p.categoria}</span></div>
+            <div class="meta">
+              <span>Volume: ${p.volume}</span><span>•</span><span>Categoria: ${p.categoria}</span>
+              ${typeof p.estoque === 'number' ? `<span>•</span><span>Estoque: ${p.estoque}</span>` : '' }
+            </div>
             <div class="price">${currency(p.preco)}</div>
             <div class="btns">
-              <a class="btn primary" href="#" onclick="abrirPix('${encodeURIComponent(p.id)}','${encodeURIComponent(p.nome)}','${encodeURIComponent(p.volume)}', ${p.preco})">PIX (QR)</a>
+              ${btnPix}
             </div>
           </div>
         </article>`;
@@ -205,7 +234,7 @@
     function mostrarQrPix(titulo, payload){
       pixTitle.textContent = titulo;
       copiaCola.value = payload;
-      const url = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&data=${encodeURIComponent(payload)}`; // maior
+      const url = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&data=${encodeURIComponent(payload)}`;
       qrImg.src = url;
 
       if (copyMsg){ copyMsg.classList.remove('show'); copyMsg.setAttribute('aria-hidden','true'); copyMsg.textContent = 'Copiado!'; }
