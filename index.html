@@ -91,7 +91,6 @@
           <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
             <button id="btnCopy" class="btn">Copiar</button>
             <span id="copyMsg" class="inline-ok" role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">Copiado!</span>
-            <a id="btnDownload" class="btn primary" download="pix-qrcode.png">Baixar QR</a>
             <button id="closeQr" class="btn" style="margin-left:auto">Fechar</button>
           </div>
         </div>
@@ -155,7 +154,6 @@
     const copiaCola  = document.getElementById('pixCopiaCola');
     const pixTitle   = document.getElementById('pixTitle');
     const btnCopy    = document.getElementById('btnCopy');
-    const btnDownload= document.getElementById('btnDownload');
     const closeQr    = document.getElementById('closeQr');
     const copyMsg    = document.getElementById('copyMsg');
 
@@ -173,7 +171,6 @@
       copiaCola.value = payload;
       const url = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(payload)}`;
       qrImg.src = url;
-      btnDownload.href = url;
 
       // limpa o aviso e reseta botão
       if (copyMsg){ copyMsg.classList.remove('show'); copyMsg.setAttribute('aria-hidden','true'); copyMsg.textContent = 'Copiado!'; }
